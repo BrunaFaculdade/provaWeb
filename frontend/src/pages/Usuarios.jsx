@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -12,21 +12,26 @@ export default function Usuarios() {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>Lista de Usuários</Typography>
-      <List>
+      <Typography variant="h4" gutterBottom>Usuários</Typography>
+      <Grid container spacing={2}>
         {usuarios.map(usuario => (
-          <ListItem 
-            button 
-            key={usuario.id} 
-            onClick={() => window.open(`/dados/${usuario.id}`, '_blank')}
-          >
-            <ListItemText 
-              primary={usuario.nome} 
-              secondary={usuario.email} 
-            />
-          </ListItem>
+          <Grid item xs={12} sm={6} md={4} key={usuario.id}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">{usuario.nome}</Typography>
+                <Typography variant="body2">{usuario.email}</Typography>
+                <Button 
+                  onClick={() => window.open(`/dados/${usuario.id}`, '_blank')} 
+                  variant="outlined" 
+                  sx={{ mt: 2 }}
+                >
+                  Ver detalhes
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </List>
+      </Grid>
     </>
   );
 }
