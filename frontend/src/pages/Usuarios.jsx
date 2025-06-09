@@ -1,37 +1,32 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Container, List, ListItem, ListItemText, Typography } from '@mui/material';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:3001/usuarios')
+    fetch('http://localhost:3005/usuarios') // ou http://localhost:3005 se você trocou a porta
       .then(res => res.json())
-      .then(data => setUsuarios(data));
+      .then(data => setUsuarios(data))
+      .catch(err => console.error(err));
   }, []);
 
+  const handleClick = (id) => {
+    navigate(`/dados/${id}`);
+  };
+
   return (
-    <>
-      <Typography variant="h4" gutterBottom>Usuários</Typography>
-      <Grid container spacing={2}>
-        {usuarios.map(usuario => (
-          <Grid item xs={12} sm={6} md={4} key={usuario.id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{usuario.nome}</Typography>
-                <Typography variant="body2">{usuario.email}</Typography>
-                <Button 
-                  onClick={() => window.open(`/dados/${usuario.id}`, '_blank')} 
-                  variant="outlined" 
-                  sx={{ mt: 2 }}
-                >
-                  Ver detalhes
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
+    <Container>
+      <Typography variant="h4" gutterBottom>Lista de Usuários</Typography>
+      <List>
+        {usuarios.map((user) => (
+          <ListItem button key={user.id} onClick={() => handleClick(user.id)}>
+            <ListItemText primary={user.nome} />
+          </ListItem>
         ))}
-      </Grid>
-    </>
+      </List>
+    </Container>
   );
 }

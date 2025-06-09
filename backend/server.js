@@ -9,13 +9,15 @@ app.get('/usuarios', (req, res) => {
   res.json(usuarios);
 });
 
-app.get('/usuarios/:id', (req, res) => {
-  const user = usuarios.find(u => u.id == req.params.id);
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404).json({ error: 'Usuário não encontrado' });
+app.get('/dados/:id', (req, res) => {
+  const { id } = req.params;
+  const usuario = usuarios.find((u) => u.id === parseInt(id));
+  
+  if (!usuario) {
+    return res.status(404).json({ erro: 'Usuário não encontrado' });
   }
+
+  res.json(usuario);
 });
 
 const PORT = 3001;
